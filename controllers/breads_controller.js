@@ -6,19 +6,17 @@ const Baker = require('../models/baker')
 
 // INDEX
 breads.get('/', (req, res) => {
-  Bread.find()
+  Baker.find()
+    .then(foundBakers => {
+      Bread.find()
       .then(foundBreads => {
           res.render('index', {
             breads: foundBreads,
+            bakers: foundBakers,
             title: 'Index Page'
           })
       })
-  // res.render('index',
-  //   {
-  //     breads: Bread,
-  //     title: 'Index Page'
-  //   }
-  // )
+    })
 })
 
 
@@ -35,9 +33,9 @@ breads.get('/new', (req, res) => {
 // DELETE
 breads.delete('/:id', (req, res) => {
   Bread.findByIdAndDelete(req.params.id)
-  .then(deletedBread => {
-    res.status(303).redirect('/breads')
-  })
+    .then(deletedBread => {
+      res.status(303).redirect('/breads')
+    })
 })
 
 // EDIT
@@ -58,16 +56,16 @@ breads.get('/:id/edit', (req, res) => {
 breads.get('/:id', (req, res) => {
   Bread.findById(req.params.id)
     .populate('baker')
-    .then(foundBread => {
-      const bakedBy = foundBread.getBakedBy()
-      console.log(bakedBy)
-      res.render('show', {
-        bread: foundBread
+      .then(foundBread => {
+        const bakedBy = foundBread.getBakedBy()
+        console.log(bakedBy)
+        res.render('show', {
+          bread: foundBread
+        })
       })
-    })
-    .catch(err => {
-      res.send('404')
-    })
+      .catch(err => {
+        res.send('404')
+      })
 })
 
 // CREATE

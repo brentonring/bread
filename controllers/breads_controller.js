@@ -1,7 +1,8 @@
+// dependencies
 const express = require('express')
 const Bread = require('../models/bread')
-// const bread = require('../models/bread')
 const breads = express.Router()
+const Baker = require('../models/baker')
 
 // INDEX
 breads.get('/', (req, res) => {
@@ -23,7 +24,12 @@ breads.get('/', (req, res) => {
 
 // NEW
 breads.get('/new', (req, res) => {
-  res.render('New')
+  Baker.find()
+    .then(foundBakers => {
+      res.render('New', {
+        bakers: foundBakers
+      })
+    })
 })
 
 // DELETE
@@ -36,17 +42,22 @@ breads.delete('/:id', (req, res) => {
 
 // EDIT
 breads.get('/:id/edit', (req, res) => {
-  Bread.findById(req.params.id)
-    .then (foundBread => {
-      res.render('edit', {
-        bread: foundBread
-      })
+  Baker.find()
+    .then(foundBakers => {
+      Bread.findById(req.params.id)
+        .then (foundBread => {
+          res.render('edit', {
+            bread: foundBread,
+            bakers: foundBakers
+          })
+        })
     })
 })
 
 // SHOW
 breads.get('/:id', (req, res) => {
   Bread.findById(req.params.id)
+    .populate('baker')
     .then(foundBread => {
       const bakedBy = foundBread.getBakedBy()
       console.log(bakedBy)

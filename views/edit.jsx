@@ -5,7 +5,7 @@ function Edit ({bread, bakers}) {
     return (
       <Default>
         <h2>Edit a bread</h2>
-        <form action={`/breads/${bread.id}?_method=PUT`} method='POST'>
+        <form action={`/breads/${bread._id}?_method=PUT`} method='POST'>
           <label htmlFor="name">Name</label>
           <input
             type="text"
@@ -35,7 +35,7 @@ function Edit ({bread, bakers}) {
             name="hasGluten"
             id="hasGluten"
             defaultChecked
-            defaultValue={bread.hasGluten}
+            // defaultValue={bread.hasGluten}
           />
           <br />
           <input type="submit"/>

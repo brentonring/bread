@@ -23,7 +23,7 @@ const { Schema } = mongoose
 const breadSchema = new Schema({
     name: { type: String, required: true },
     hasGluten: Boolean,
-    image: { type: String, default: 'http://placehold.it/500x500.png' },
+    image: { type: String, default: 'https://cdn.pixabay.com/photo/2016/11/29/08/24/bakery-1868396_1280.jpg' },
     baker: {
         type: Schema.Types.ObjectId,
         ref: 'Baker'

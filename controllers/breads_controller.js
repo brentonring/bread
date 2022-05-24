@@ -5,18 +5,15 @@ const breads = express.Router()
 const Baker = require('../models/baker')
 
 // INDEX
-breads.get('/', (req, res) => {
-  Baker.find()
-    .then(foundBakers => {
-      Bread.find()
-      .then(foundBreads => {
-          res.render('index', {
-            breads: foundBreads,
-            bakers: foundBakers,
-            title: 'Index Page'
-          })
-      })
-    })
+breads.get('/', async (req, res) => {
+  let foundBakers = await Baker.find().lean()
+  let foundBreads = await Bread.find().lean()
+  console.log(foundBreads)
+  res.render('index', {
+    breads: foundBreads,
+    bakers: foundBakers,
+    title: 'Index Page'
+  })
 })
 
 
@@ -58,7 +55,7 @@ breads.get('/:id', (req, res) => {
     .populate('baker')
       .then(foundBread => {
         const bakedBy = foundBread.getBakedBy()
-        console.log(bakedBy)
+        // console.log(bakedBy)
         res.render('show', {
           bread: foundBread
         })
@@ -91,7 +88,7 @@ breads.put('/:id', (req, res) => {
   }
   Bread.findByIdAndUpdate(req.params.id, req.body, {new: true})
     .then(updatedBread => {
-      console.log(updatedBread)
+      // console.log(updatedBread)
       res.redirect(`/breads/${req.params.id}`)
     })
 })
